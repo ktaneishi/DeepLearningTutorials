@@ -1,0 +1,12 @@
+*.o
+*.orig
+*.pyc
+*.pyo
+*.so
+*.sw?
+*.log
+*.out
+*.bak
+*.pkl
+.DS_Store
+build
