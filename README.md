@@ -1,5 +1,5 @@
-DBN-Kyoto - Deep Belief Network to Predict Compound-Protein Interactions
-========================================================================
+Deep Belief Network to Predict Compound-Protein Interactions
+============================================================
 
 Deep Belief Network is Deep Learning application to predict compound-protein interactions(CPI)
 written based on Deep Learning tutorial implementation.
