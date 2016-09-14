@@ -3,6 +3,7 @@
 LICENSE
 =======
 
+Copyright (c) 2014--2016, Kei Taneishi
 Copyright (c) 2010--2015, Deep Learning Tutorials Development Team
 All rights reserved.
 
