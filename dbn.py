@@ -16,8 +16,8 @@ def load_data(dataset, nfold=5):
     numpy.random.seed(123)
     data = numpy.random.permutation(data)
 
-    train_set = data[:-data.shape[0] / nfold]
-    test_set = data[-data.shape[0] / nfold:]
+    train_set = data[:-int(data.shape[0] / nfold)]
+    test_set = data[-int(data.shape[0] / nfold):]
 
     def shared_dataset(data_xy, borrow=True):
         data_x = data_xy[:,:-1]
