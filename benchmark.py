@@ -1,7 +1,6 @@
-# coding: utf-8
 import os
 import sys
-import time
+import timeit
 
 import numpy
 
@@ -46,9 +45,9 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
                                                 k=k)
 
     print('... pre-training the model')
-    start_time = time.clock()
+    start_time = timeit.default_timer()
     ## Pre-train layer-wise
-    TIME = time.time()
+    TIME = timeit.default_timer()
     for i in range(dbn.n_layers):
         # go through pretraining epochs
         for epoch in range(pretraining_epochs):
@@ -58,13 +57,13 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
                 c.append(pretraining_fns[i](index=batch_index,
                                             lr=pretrain_lr))
             print('Pre-training layer %i, epoch %d, cost ' % (i, epoch), end=' ')
-            #print numpy.mean(c), time.time()-TIME
-            #print numpy.mean(c), numpy.max(c), numpy.min(c), len(c), ' time: %.2f' % (time.time()-TIME)
+            #print numpy.mean(c), timeit.default_timer()-TIME
+            #print numpy.mean(c), numpy.max(c), numpy.min(c), len(c), ' time: %.2f' % (timeit.default_timer()-TIME)
             print(numpy.mean(c))
-            print('Stat Layers:%d LayerSize:%d BatchSize:%d PreTrainingLayer:%d Time:%.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],batch_size,i,time.time()-TIME))
-            TIME = time.time()
+            print('Stat Layers:%d LayerSize:%d BatchSize:%d PreTrainingLayer:%d Time:%.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],batch_size,i,timet.default_timer()-TIME))
+            TIME = timeit.default_timer()
 
-    end_time = time.clock()
+    end_time = timeit.default_timer()
     # end-snippet-2
     print(('The pretraining code for file ' +
                           os.path.split(__file__)[1] +
@@ -100,12 +99,12 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
 
     best_test_score = numpy.inf
     test_score = 0.
-    start_time = time.clock()
+    start_time = timeit.default_timer()
 
     done_looping = False
     epoch = 0
     score = []
-    TIME = time.time()
+    TIME = timeit.default_timer()
     batch_range =  numpy.arange(n_train_batches)
     while (epoch < training_epochs) and (not done_looping):
         epoch = epoch + 1
@@ -129,10 +128,10 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
                     )
                 ))
 
-                # print 'Stat Layers:%d LayerSize:%d PreTrainingLayer:%d Time: %.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],3,time.time()-TIME)
+                # print 'Stat Layers:%d LayerSize:%d PreTrainingLayer:%d Time: %.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],3,timeit.default_timer()-TIME)
                 i+=1
-                print('Stat Layers:%d LayerSize:%d BatchSize:%d PreTrainingLayer:%d Time:%.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],batch_size,i,time.time()-TIME))
-                TIME = time.time()
+                print('Stat Layers:%d LayerSize:%d BatchSize:%d PreTrainingLayer:%d Time:%.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],batch_size,i,timeit.default_timer()-TIME))
+                TIME = timeit.default_timer()
 
                 # if we got the best test score until now
                 if this_test_score < best_test_score:
@@ -151,7 +150,7 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
             if patience <= iter:
                 pass
 
-    end_time = time.clock()
+    end_time = timeit.default_timer()
     print((
         (
             'Optimization complete with best test performance %f %% obtained at iteration %i'

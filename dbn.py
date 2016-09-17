@@ -516,11 +516,13 @@ def main(dataset,
     score = []
     print(patience, test_frequency)
 
+    batch_range = numpy.aragen(n_train_batches)
     while (epoch < training_epochs) and (not done_looping):
         epoch = epoch + 1
+        numpy.random.shuffle(batch_range)
         for minibatch_index in range(n_train_batches):
 
-            minibatch_avg_cost = train_fn(minibatch_index)
+            minibatch_avg_cost = train_fn(batch_range[minibatch_index])
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
             if (iter + 1) % test_frequency == 0:
