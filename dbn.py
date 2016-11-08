@@ -434,8 +434,8 @@ class DBN(object):
         return pretrain_fns
 
 def main(dataset,
-        finetune_lr=0.1, pretraining_epochs=100,
-        pretrain_lr=0.01, k=1, training_epochs=1000, batch_size=10,
+        finetune_lr=0.1, pretraining_epochs=0,
+        pretrain_lr=0.01, k=1, training_epochs=300, batch_size=10,
         hidden_layers_sizes=[2000,2000,2000]):
 
     datasets = load_data(dataset)
@@ -516,7 +516,7 @@ def main(dataset,
     score = []
     print(patience, test_frequency)
 
-    batch_range = numpy.aragen(n_train_batches)
+    batch_range = numpy.arange(n_train_batches)
     while (epoch < training_epochs) and (not done_looping):
         epoch = epoch + 1
         numpy.random.shuffle(batch_range)
@@ -545,7 +545,7 @@ def main(dataset,
                     best_iter = iter
 
             if patience * test_frequency <= iter:
-                done_looping = True
+                #done_looping = True
                 pass
 
     df = pd.DataFrame(score)
