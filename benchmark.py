@@ -8,15 +8,19 @@ import theano
 import theano.tensor as T
 from theano.tensor.shared_randomstreams import RandomStreams
 
-from dbn import load_data, build_finetune_functions
-from dbn import LogisticRegression, HiddenLayer, RBM, DBN
+import dbn as deep
 import pandas as pd
 
-def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
-             pretrain_lr=0.01, k=1, training_epochs=10,
-             dataset='mnist.pkl.gz', batch_size=10, hidden_layers_sizes=[1000,1000,1000]):
+def main(finetune_lr=0.1, pretraining_epochs=0, pretrain_lr=0.01, k=1, 
+        training_epochs=10, dataset='cpi.npz', batch_size=10, 
+        hidden_layers_sizes=[2000,2000,2000]):
+
+    if not os.path.exists(dataset):
+        sys.exit('Please download cpi.npz from "https://my.syncplicity.com/share/vvks9oqxas1xneg/cpi"')
+
+    print(hidden_layers_sizes[0], len(hidden_layers_sizes), batch_size)
     
-    datasets = load_data(dataset)
+    datasets = deep.load_data(dataset)
 
     train_set_x, train_set_y = datasets[0]
     test_set_x, test_set_y = datasets[1]
@@ -31,7 +35,7 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
     numpy_rng = numpy.random.RandomState(123)
     print('... building the model')
     # construct the Deep Belief Network
-    dbn = DBN(numpy_rng=numpy_rng, n_ins=n_in,
+    dbn = deep.DBN(numpy_rng=numpy_rng, n_ins=n_in,
               hidden_layers_sizes=hidden_layers_sizes,
               n_outs=n_out)
 
@@ -74,7 +78,7 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
 
     # get the training and testing function for the model
     print('... getting the finetuning functions')
-    train_fn, test_model = build_finetune_functions(dbn,
+    train_fn, test_model = deep.build_finetune_functions(dbn,
         datasets=datasets,
         batch_size=batch_size,
         learning_rate=finetune_lr
@@ -169,19 +173,5 @@ def test_DBN(finetune_lr=0.1, pretraining_epochs=0,
     basename = '%s_%s_DBN.log' % (os.path.basename(dataset), params)
     df.to_pickle('result/%s.log' % (basename))
 
-
 if __name__ == '__main__':
-    if len(sys.argv) > 3:
-        dataset = sys.argv[1]
-        n_units = int(sys.argv[2])
-        n_layers = int(sys.argv[3])
-        hidden_layers_sizes = [n_units] * n_layers
-        batch_size = 10
-        try:
-            batch_size = int(sys.argv[4])
-        except:
-            pass	
-        print(hidden_layers_sizes[0], len(hidden_layers_sizes), batch_size)
-        test_DBN(dataset=dataset, hidden_layers_sizes=hidden_layers_sizes, batch_size=batch_size)
-    else:
-        sys.exit('%s filename n_units n_layers' % sys.argv[0])
+    main()
