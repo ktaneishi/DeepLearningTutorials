@@ -8,9 +8,10 @@ import numpy
 from theano.tensor.shared_randomstreams import RandomStreams
 
 import dbn as deep
+import pandas as pd
 
 def main(finetune_lr=0.1, pretraining_epochs=0,
-             pretrain_lr=0.01, k=1, training_epochs=10, 
+             pretrain_lr=0.01, k=1, training_epochs=1000,
              dataset='cpi.npz', batch_size=10,
              hidden_layers_sizes=[2000,2000,2000]):
 
@@ -45,7 +46,6 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
     print('... pre-training the model')
     start_time = timeit.default_timer()
     # Pre-train layer-wise
-    TIME = timeit.default_timer()
     for i in range(dbn.n_layers):
         # go through pretraining epochs
         for epoch in range(pretraining_epochs):
@@ -56,8 +56,6 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
                                             lr=pretrain_lr))
             print('Pre-training layer %i, epoch %d, cost ' % (i, epoch), end=' ')
             print(numpy.mean(c, dtype='float64'))
-            print('Stat Layers:%d LayerSize:%d BatchSize:%d PreTrainingLayer:%d Time:%.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],batch_size,i,timet.default_timer()-TIME))
-            TIME = timeit.default_timer()
 
     end_time = timeit.default_timer()
     # end-snippet-2
@@ -79,7 +77,7 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
     # early-stopping parameters
 
     # look as this many examples regardless
-    patience = 5000
+    patience = 4 * n_train_batches
 
     # wait this much longer when a new best is found
     patience_increase = 2.
@@ -101,9 +99,6 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
     done_looping = False
     epoch = 0
 
-    score = []
-    TIME = timeit.default_timer()
-
     batch_range = numpy.arange(n_train_batches)
     while (epoch < training_epochs) and (not done_looping):
         epoch = epoch + 1
@@ -117,6 +112,7 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
 
                 test_losses = test_model()
                 this_test_loss = numpy.mean(test_losses, dtype='float64')
+                score.append([epoch,this_test_loss])
                 print('epoch %i, minibatch %i/%i, test error %f %%' % (
                     epoch,
                     minibatch_index + 1,
@@ -124,10 +120,6 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
                     this_test_loss * 100.
                     )
                 )
-
-                i+=1
-                print('Stat Layers:%d LayerSize:%d BatchSize:%d PreTrainingLayer:%d Time:%.2f' % (len(hidden_layers_sizes),hidden_layers_sizes[0],batch_size,i,timeit.default_timer()-TIME))
-                TIME = timeit.default_timer()
 
                 # if we got the best test score until now
                 if this_test_loss < best_test_loss:
@@ -142,15 +134,31 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
                     best_iter = iter
 
             if patience <= iter:
-                pass
+                done_looping = True
+                break
 
     end_time = timeit.default_timer()
+    print(('Optimization complete with best test score of %f %%, '
+           'obtained at iteration %i, '
+           'with test performance %f %%'
+           ) % (best_test_loss * 100., best_iter + 1, test_score * 100.))
     print('The fine tuning code for file ' + os.path.split(__file__)[1] +
           ' ran for %.2fm' % ((end_time - start_time) / 60.), file=sys.stderr)
+
+    if not os.path.exists('result'):
+        os.makedirs('result')
+
+    df = pd.DataFrame(score)
+    basename = '%s_%dx%d_DBN.log' % (os.path.basename(dataset), 
+            hidden_layers_sizes[0], len(hidden_layers_sizes))
+    df.to_pickle('result/%s.log' % (basename))
 
 if __name__ == '__main__':
     dataset = 'cpi.npz'
     if not os.path.exists(dataset):
         sys.exit('Please download cpi.npz from "https://my.syncplicity.com/share/vvks9oqxas1xneg/cpi"')
 
-    main(dataset=dataset)
+    hidden_layers_sizes=[2000,2000,2000]
+    batch_size = 10
+    print(hidden_layers_sizes[0], len(hidden_layers_sizes), batch_size)
+    main(dataset=dataset, hidden_layers_sizes=hidden_layers_sizes)
