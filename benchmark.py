@@ -101,7 +101,6 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
     done_looping = False
     epoch = 0
 
-    score = []
     TIME = timeit.default_timer()
 
     batch_range = numpy.arange(n_train_batches)
