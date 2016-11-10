@@ -11,7 +11,7 @@ import dbn as deep
 import pandas as pd
 
 def main(finetune_lr=0.1, pretraining_epochs=0,
-             pretrain_lr=0.01, k=1, training_epochs=1000,
+             pretrain_lr=0.01, k=1, training_epochs=100,
              dataset='cpi.npz', batch_size=10,
              hidden_layers_sizes=[2000,2000,2000]):
 
@@ -135,8 +135,7 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
                     best_iter = iter
 
             if patience <= iter:
-                done_looping = True
-                break
+                pass
 
     end_time = timeit.default_timer()
     print(('Optimization complete with best test score of %f %%, '
@@ -150,9 +149,8 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
         os.makedirs('result')
 
     df = pd.DataFrame(score)
-    basename = '%s_%dx%d_DBN.log' % (os.path.basename(dataset), 
-            hidden_layers_sizes[0], len(hidden_layers_sizes))
-    df.to_pickle('result/%s.log' % (basename))
+    df.to_pickle('result/%s_%dx%d.log' % (os.path.basename(dataset),
+        hidden_layers_sizes[0], len(hidden_layers_sizes)))
 
 if __name__ == '__main__':
     dataset = 'cpi.npz'

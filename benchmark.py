@@ -79,7 +79,7 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
     # early-stopping parameters
 
     # look as this many examples regardless
-    patience = 5000
+    patience = 4 * n_train_batches
 
     # wait this much longer when a new best is found
     patience_increase = 2.
