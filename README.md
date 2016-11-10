@@ -21,10 +21,10 @@ Files
 - dbn.py  
 Definition of Deep Belief Network.
 
-- main.py
+- main.py  
 Main script.
 
-- benchmark.py
+- benchmark.py  
 Benchmark script.
 
 - cpi.npz  
