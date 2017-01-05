@@ -153,9 +153,10 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
         hidden_layers_sizes[0], len(hidden_layers_sizes)))
 
 if __name__ == '__main__':
-    dataset = 'cpi.npz'
-    if not os.path.exists(dataset):
-        sys.exit('Please download cpi.npz from "https://my.syncplicity.com/share/vvks9oqxas1xneg/cpi"')
+    if len(sys.argv) > 1:
+        dataset = sys.argv[1]
+    else:
+        sys.exit('Usage: %s [datafile]' % sys.argv[0])
 
     hidden_layers_sizes=[2000,2000,2000]
     batch_size = 10

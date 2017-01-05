@@ -148,8 +148,11 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
           ' ran for %.2fm' % ((end_time - start_time) / 60.), file=sys.stderr)
 
 if __name__ == '__main__':
-    dataset = 'cpi.npz'
+    if len(sys.argv) > 1:
+        dataset = sys.argv[1]
+    else:
+        dataset = 'cpi.npz'
     if not os.path.exists(dataset):
-        sys.exit('Please download cpi.npz from "https://my.syncplicity.com/share/vvks9oqxas1xneg/cpi"')
+        sys.exit('Usage: %s [datafile]\nPlease download sample dataset "cpi.npz" from "https://my.syncplicity.com/share/vvks9oqxas1xneg/cpi"' % sys.argv[0])
 
     main(dataset=dataset)
