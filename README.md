@@ -5,7 +5,7 @@ This is a drug discovery workload using Deep Belief Network (DBN) and Deep Neura
 This algorithm is used to predict if the chemical structure of a compound can interact with the protein sequence.
 Deep Learning resolve the bottleneck of exponential increase in the calculation time and memory consumption encountered in SVM algorithm.
 
-These scripts were used for the optimization of [Theano by Intel](https://github.com/intel/theano),
+This implementation were used for the optimization of [Theano by Intel](https://github.com/intel/theano),
 and now this optimization were merged in [Theano](https://github.com/theano/theano).
 
 The results using this implementation were reported in the paper _Prediction of Compound-protein Interactions Based on Deep Learning_, MolInf. 2016.
