@@ -107,7 +107,7 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
         numpy.random.shuffle(batch_range)
         for minibatch_index in range(n_train_batches):
 
-            minibatch_avg_cost = train_fn(batch_range[minibatch_index])
+            train_fn(batch_range[minibatch_index])
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
             if (iter + 1) % test_frequency == 0:
@@ -159,7 +159,4 @@ if __name__ == '__main__':
     else:
         sys.exit('Usage: %s [datafile]' % sys.argv[0])
 
-    hidden_layers_sizes=[2000,2000,2000]
-    batch_size = 10
-    print(hidden_layers_sizes[0], len(hidden_layers_sizes), batch_size)
-    main(dataset=dataset, hidden_layers_sizes=hidden_layers_sizes)
+    main(dataset=dataset)

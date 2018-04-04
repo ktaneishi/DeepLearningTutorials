@@ -104,12 +104,13 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
     TIME = timeit.default_timer()
 
     batch_range = numpy.arange(n_train_batches)
+
     while (epoch < training_epochs) and (not done_looping):
         epoch = epoch + 1
         numpy.random.shuffle(batch_range)
         for minibatch_index in range(n_train_batches):
 
-            minibatch_avg_cost = train_fn(batch_range[minibatch_index])
+            train_fn(batch_range[minibatch_index])
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
             if (iter + 1) % test_frequency == 0:
