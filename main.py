@@ -101,6 +101,7 @@ def main(finetune_lr=0.1, pretraining_epochs=0,
 
     score = []
     batch_range = numpy.arange(n_train_batches)
+
     while (epoch < training_epochs) and (not done_looping):
         epoch = epoch + 1
         numpy.random.shuffle(batch_range)
