@@ -31,7 +31,7 @@ Benchmark script.
 
 - cpi.npz  
 Sample data including about 250,000 of compound protein interactions.  
-Download from https://briefcase.riken.jp/public/tpIIAAlhyE9APxwBBkVlf8oxRVP_JdtRjPApfQg6Chrb/l/PdMAXkUAXOQBGFdllOkxfOTu4iw_ysMlA_oyfqqQ
+Download from https://briefcase.riken.jp/public/xpIIAA4hu09ACK8
 
 Usage
 -----
